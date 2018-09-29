@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[20]:
 
 
 import pandas as pd
@@ -15,15 +15,16 @@ import math
 import random
 
 
-# In[2]:
+# In[21]:
 
 
 fps=120
 threshold=0.75
 moving_avg_len=10
+filter_value = 20
 
 
-# In[13]:
+# In[28]:
 
 
 def readFileData(file):
@@ -125,8 +126,29 @@ def splitData(records):##sungshil
     
     return record_all
 
+def getRecordsMaxLength(records):
+    maxLen = 0
+    for record in records:
+        if (len(record) > maxLen):
+            maxLen = len(record)
+        
+    return maxLen
 
-# In[17]:
+def extendRecordsLen(records, length):
+    ret = np.empty((0, length, 3))
+    for index in range(len(records)):
+        record = records[index]
+        if (len(record) < length):
+            record = np.pad(record, ((0, length - len(record)), (0,0)), mode='constant', constant_values=0)
+            
+
+        ret = np.append(ret, [record], axis=0)
+    print("1-2")
+
+    return ret
+
+
+# In[35]:
 
 
 (records,label)=readData("dr")
@@ -134,18 +156,13 @@ print("size of ",len(records[0]))
 print("size of divide ",len(records[0])//40)
 #records=filter_data(records)
 records=splitData(records)
+max_len=getRecordsMaxLength(records)
+records=extendRecordsLen(records, max_len)
 
 
-# In[5]:
+
+# In[39]:
 
 
-tt=[]
-tt.append([1])
-print(tt)
 
-
-# In[6]:
-
-
-X= tf.placeholder()
 
