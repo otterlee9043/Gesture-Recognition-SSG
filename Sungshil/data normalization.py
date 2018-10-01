@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[20]:
+# In[1]:
 
 
 import pandas as pd
@@ -15,16 +15,17 @@ import math
 import random
 
 
-# In[21]:
+# In[2]:
 
 
 fps=120
-threshold=0.75
+threshold=1
 moving_avg_len=10
 filter_value = 20
+length=100
 
 
-# In[28]:
+# In[3]:
 
 
 def readFileData(file):
@@ -99,18 +100,18 @@ def splitData(records):##sungshil
         if (sum_pre<threshold and sum_now>threshold):
             
             ct=ct+1
-            start=120*i
+            start=term*i
             print("start",start)
         if (sum_pre>threshold and sum_now<threshold):
-            end=120*i  
+            end=term*i  
             print("end",end)
             print("step is " ,ct)
             print("length of end-start",(end-start))
             s=[]
             for k in range(end-start):
-                t=(records[0][term*i+j+k])
+                #t=(records[0][term*i+j+k])
                 #print("t is",t)
-                s.append(t)
+                s.append(records[0][start+k])
                 #print("s is ",s)
             record_all.append(s)
             
@@ -122,6 +123,7 @@ def splitData(records):##sungshil
     print("number of patterm : ",ct)
     print("average is",np.average(record_sum))
     print("number of term",len(record_sum))
+  
     plt.plot(record_sum[1500:2500])
     
     return record_all
@@ -134,21 +136,35 @@ def getRecordsMaxLength(records):
         
     return maxLen
 
-def extendRecordsLen(records, length):
-    ret = np.empty((0, length, 3))
+def shortenRecordsLen(records, length):
+    ret=[]
+    rec_len=len(records)
+    
     for index in range(len(records)):
+        s=[]
         record = records[index]
-        if (len(record) < length):
-            record = np.pad(record, ((0, length - len(record)), (0,0)), mode='constant', constant_values=0)
-            
-
-        ret = np.append(ret, [record], axis=0)
-    print("1-2")
+        if len(record) > length and len(record)<3000:
+            for i in range(length):
+                r=[]
+                t=i*len(record)/length
+                if t%1==0:
+                    s.append(records[index][int(t)])
+                else:
+                    a=t//1
+                    s1=t-a
+                    s2=a+1-t
+                    for i in range(3):
+                        r.append(s1*records[index][int(a)][i]+s2*records[index][int(a)][i])
+                    s.append(r) 
+        
+                
+        ret.append(s)
+    plt.plot
 
     return ret
 
 
-# In[35]:
+# In[4]:
 
 
 (records,label)=readData("dr")
@@ -156,13 +172,42 @@ print("size of ",len(records[0]))
 print("size of divide ",len(records[0])//40)
 #records=filter_data(records)
 records=splitData(records)
-max_len=getRecordsMaxLength(records)
-records=extendRecordsLen(records, max_len)
+records=shortenRecordsLen(records, length)
+print(records[0])
 
 
 
-# In[39]:
+# In[16]:
 
 
+for i in range(len(records)):
+    plt.plot(records[i])
 
+
+# In[22]:
+
+
+sum_all=[]
+sum=0
+ct=0
+
+for j in range(1000):
+        sum=records[9][j][0]#+records[9][j][1]+records[9][j][2]
+        sum_all.append(sum)
+        ct=ct+1
+        print(ct)
+plt.plot(sum_all[:999])
+            
+
+
+# In[9]:
+
+
+print(records[9][700:999])
+
+
+# In[16]:
+
+
+print(3%1)
 
