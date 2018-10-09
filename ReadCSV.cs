@@ -17,7 +17,7 @@ public class ReadCSV : MonoBehaviour {
     public GameObject Back;
     public GameObject LocalHand;
     public GameObject BackToHand;
-    public GameObject TracePrefab;
+    //public GameObject TracePrefab;
     bool stopLoop = false;
     int i = 0;
 
@@ -97,20 +97,20 @@ public class ReadCSV : MonoBehaviour {
             var y_axis = R.GetColumn(1);
             var z_axis = R.GetColumn(2);
 
-            Debug.DrawLine(Back.transform.position, Back.transform.position + new Vector3(x_axis[0], x_axis[1], x_axis[2]), Color.red);
-            Debug.DrawLine(Back.transform.position, Back.transform.position + new Vector3(y_axis[0], y_axis[1], y_axis[2]), Color.blue);
-            Debug.DrawLine(Back.transform.position, Back.transform.position + new Vector3(z_axis[0], z_axis[1], z_axis[2]), Color.green);
-            BackToHand.transform.position = Hand.transform.position - Back.transform.position;
+            //Debug.DrawLine(Back.transform.position, Back.transform.position + new Vector3(x_axis[0], x_axis[1], x_axis[2]), Color.red);
+            //Debug.DrawLine(Back.transform.position, Back.transform.position + new Vector3(y_axis[0], y_axis[1], y_axis[2]), Color.blue);
+            //Debug.DrawLine(Back.transform.position, Back.transform.position + new Vector3(z_axis[0], z_axis[1], z_axis[2]), Color.green);
+            //BackToHand.transform.position = Hand.transform.position - Back.transform.position;
             LocalHand.transform.position = R.transpose * (Hand.transform.position - Back.transform.position);
-            //localPositionObj.transform.localPosition = Hand.transform.localPosition;
-            //LocalHand.transform.localPosition = Hand.transform.position;
+            localPositionObj.transform.localPosition = Hand.transform.localPosition;
+            LocalHand.transform.localPosition = Hand.transform.position;
 
             //var r = matrix4x4.rotate(quaternion);
             //local = r.transpose * (hand - back);
             if (i % 20 == 0) Instantiate(TracePrefab, LocalHand.transform.position, LocalHand.transform.rotation);
             count++;
             i++;
-            Debug.LogFormat("x:{0},y:{1},z:{2}", LocalHand.transform.position.x, LocalHand.transform.position.y, LocalHand.transform.position.z);
+            //Debug.LogFormat("x:{0},y:{1},z:{2}", LocalHand.transform.position.x, LocalHand.transform.position.y, LocalHand.transform.position.z);
             string outputLine = String.Format("{0},{1},{2}",LocalHand.transform.position.x, LocalHand.transform.position.y, LocalHand.transform.position.z);
             outputString.Add(outputLine);
         }
