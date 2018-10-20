@@ -5,7 +5,7 @@
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from scipy import stats
 import tensorflow as tf
 
@@ -33,7 +33,7 @@ def plot_axis(ax, x, y, title):
     ax.set_xlim([min(x), max(x)])
     ax.grid(True)
     
-def plot_activity(activity,data):
+'''def plot_activity(activity,data):
     fig, (ax0, ax1, ax2) = plt.subplots(nrows = 3, figsize = (15, 10), sharex = True)
     plot_axis(ax0, data['timestamp'], data['x-axis'], 'x-axis')
     plot_axis(ax1, data['timestamp'], data['y-axis'], 'y-axis')
@@ -41,7 +41,7 @@ def plot_activity(activity,data):
     plt.subplots_adjust(hspace=0.2)
     fig.suptitle(activity)
     plt.subplots_adjust(top=0.90)
-    plt.show()
+    plt.show()'''
     
 def windows(data, size):
     start = 0
